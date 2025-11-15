@@ -1,0 +1,263 @@
+// TR
+
+// 3 Tane Servo Motor Kullanıyoruz  
+// Topraklama hatları ve 5V güç pini breadborad üzerisinden aktarılıyor.  
+
+// Otonom Robot Hareketlerim  
+
+// Kafa Salla 
+// Kolları Salla 
+// Kolları Capraz
+// sag_kol yukari ve kafa sag_sol
+// sol kol yukari ve kafa sag_sol
+
+// TR
+
+#include <Servo.h> 
+
+Servo kafa;
+Servo sag;
+Servo sol;
+
+int sayi;
+
+
+void setup() {
+  
+  sag.attach(9);
+  kafa.attach(10);
+  sol.attach(11);
+  
+
+  sag.write(90);
+  kafa.write(90);
+  sol.write(90);
+
+  randomSeed(analogRead(A0)); // 1 ile 5 arasında farklı beş değer.
+  Serial.begin(9600);
+  
+
+}
+
+void loop() {
+
+  sayi = random(1,6);
+  Serial.println(sayi); // ekranda seçtiği sayıları görmek istiyorum
+  //kafaSalla();
+  //kolSalla();
+  //caprazSalla();
+  delay(2000);
+  
+  switch(sayi) {
+
+    case 1:
+    kafaSalla ();
+    break;
+
+    case 2:
+    kolSalla();
+    break;
+
+
+    case 3:
+    caprazSalla();
+    break;
+
+
+    case 4:
+    sag_kafaSalla ();
+    break;
+
+
+    case 5:
+    sol_kafaSalla ();
+    break;
+ 
+  }
+  delay(200);
+
+}
+
+void kafaSalla (){
+  kafa.write(20);
+  delay(300);
+  kafa.write(160);
+  delay(200);
+}
+
+void kolSalla(){
+  sol.write(30);
+  sag.write(180);
+  delay(300);
+  sol.write(180);
+  sag.write(30);
+  delay(200);
+}
+
+void caprazSalla(){
+  sol.write(30);
+  sag.write(30);
+  delay(300);
+  sol.write(150);
+  sag.write(150);
+  delay(200);
+}
+
+void sag_kafaSalla (){
+  sag.write(150);
+  kafa.write(20);
+  delay(300);
+  kafa.write(160);
+  delay(200);
+  sag.write(90);
+
+}
+
+void sol_kafaSalla (){
+  sol.write(0);
+  kafa.write(20);
+  delay(300);
+  kafa.write(160);
+  delay(200);
+  sol.write(90);
+  
+}
+
+// EN
+
+// We are using 3 Servo Motors 
+// Ground lines and the 5V power pin are supplied via the breadboard. 
+
+// Autonomous Robot Movements 
+
+// Shake Head 
+// Shake Arms 
+// Cross Arms
+// right_arm up and head right_left
+// left arm up and head right_left
+
+#include <Servo.h> 
+
+// Define Servo objects
+Servo head;
+Servo rightArm;
+Servo leftArm;
+
+// Variable to store the random number
+int number;
+
+
+void setup() {
+ 
+  // Attach servos to their corresponding pins
+  rightArm.attach(9);
+  head.attach(10);
+  leftArm.attach(11);
+  
+  // Set all servos to the initial (90-degree) position
+  rightArm.write(90);
+  head.write(90);
+  leftArm.write(90);
+
+  // Initialize the random number generator
+  randomSeed(analogRead(A0)); 
+  Serial.begin(9600);
+  
+}
+
+void loop() {
+
+  // Generate a random number between 1 and 5 (inclusive)
+  // NOTE: Changed from random(1, 5) to random(1, 6) 
+  // because random(1, 5) only generates 1, 2, 3, 4.
+  // We need (1, 6) to also get the number 5 for 'case 5'.
+  number = random(1, 6);
+  
+  Serial.println(number); // I want to see the selected numbers on the screen
+  
+  // These are commented out in the original code
+  //shakeHead();
+  //shakeArms();
+  //crossArms();
+  
+  delay(2000); // Wait for 2 seconds
+  
+  // Select a movement based on the random number
+  switch(number) {
+
+    case 1:
+    shakeHead();
+    break;
+
+    case 2:
+    shakeArms();
+    break;
+
+    case 3:
+    crossArms();
+    break;
+
+    case 4:
+    rightArm_shakeHead();
+    break;
+
+    case 5:
+    leftArm_shakeHead();
+    break;
+  
+  }
+  delay(200); // Wait after movement
+
+}
+
+// --- Movement Functions ---
+
+// Action: Shake Head
+void shakeHead (){
+  head.write(20);
+  delay(300);
+  head.write(160);
+  delay(200);
+}
+
+// Action: Shake Arms
+void shakeArms(){
+  leftArm.write(30);
+  rightArm.write(180);
+  delay(300);
+  leftArm.write(180);
+  rightArm.write(30);
+  delay(200);
+}
+
+// Action: Cross Arms
+void crossArms(){
+  leftArm.write(30);
+  rightArm.write(30);
+  delay(300);
+  leftArm.write(150);
+  rightArm.write(150);
+  delay(200);
+}
+
+// Action: Right arm up and head right-left
+void rightArm_shakeHead (){
+  rightArm.write(150);
+  head.write(20);
+  delay(300);
+  head.write(160);
+  delay(200);
+  rightArm.write(90); // Return right arm to center
+
+}
+
+// Action: Left arm up and head right-left
+void leftArm_shakeHead (){
+  leftArm.write(0);
+  head.write(20);
+  delay(300);
+  head.write(160);
+  delay(200);
+  leftArm.write(90); // Return left arm to center
+  
+}
